@@ -20,7 +20,7 @@ class ApiFcm {
     var result = await http.post(
       Uri.parse('$url/send'),
       body: jsonEncode({
-        'to': listtokens.length == 1 ? listtokens.first : listtokens,
+        'registration_ids': listtokens.length == 1 ? listtokens.first : listtokens,
         'notification': notification.toMap(),
         'data': data,
       }),
