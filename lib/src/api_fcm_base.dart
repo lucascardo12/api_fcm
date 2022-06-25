@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:api_fcm/src/message_model.dart';
+import 'package:api_fcm/src/request_fcm_model.dart';
 import 'package:http/http.dart' as http;
 
 class ApiFcm {
@@ -8,7 +9,7 @@ class ApiFcm {
 
   ApiFcm({required this.tokenServer});
 
-  Future<bool> postMessage({
+  Future<RequestFcmModel> postMessage({
     required List<String?> listtokens,
     required MessageModel notification,
     Map<String, String>? data,
@@ -20,7 +21,7 @@ class ApiFcm {
     var result = await http.post(
       Uri.parse('$url/send'),
       body: jsonEncode({
-        'registration_ids': listtokens.length == 1 ? listtokens.first : listtokens,
+        'registration_ids': listtokens,
         'notification': notification.toMap(),
         'data': data,
       }),
@@ -29,10 +30,13 @@ class ApiFcm {
         'Authorization': 'Bearer $tokenServer'
       },
     );
-    return result.statusCode == 200;
+    return RequestFcmModel(
+      body: result.body,
+      isSend: result.statusCode == 200,
+    );
   }
 
-  Future<bool> postTopics({
+  Future<RequestFcmModel> postTopics({
     required String topics,
     required MessageModel notification,
     Map<String, String>? data,
@@ -49,6 +53,10 @@ class ApiFcm {
         'Authorization': 'Bearer $tokenServer'
       },
     );
-    return result.statusCode == 200;
+
+    return RequestFcmModel(
+      body: result.body,
+      isSend: result.statusCode == 200,
+    );
   }
 }
