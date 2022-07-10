@@ -1,6 +1,6 @@
 name: api_fcm
 description: Simple api to send notifications using google FCM endpoint
-version: 1.1.0
+version: 1.1.1
 homepage: https://github.com/lucascardo12/api_fcm
 
 environment:

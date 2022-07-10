@@ -24,6 +24,15 @@ class ApiFcm {
         'registration_ids': listtokens,
         'notification': notification.toMap(),
         'data': data,
+        "android": {
+          "notification": {"image": notification.image}
+        },
+        "apns": {
+          "payload": {
+            "aps": {"mutable-content": 1}
+          },
+          "fcm_options": {"image": notification.image}
+        },
       }),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
@@ -43,11 +52,22 @@ class ApiFcm {
   }) async {
     var result = await http.post(
       Uri.parse('$url/send'),
-      body: jsonEncode({
-        'to': '/topics/$topics',
-        'notification': notification.toMap(),
-        'data': data,
-      }),
+      body: jsonEncode(
+        {
+          'to': '/topics/$topics',
+          'notification': notification.toMap(),
+          'data': data,
+          "android": {
+            "notification": {"image": notification.image}
+          },
+          "apns": {
+            "payload": {
+              "aps": {"mutable-content": 1}
+            },
+            "fcm_options": {"image": notification.image}
+          },
+        },
+      ),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         'Authorization': 'Bearer $tokenServer'
